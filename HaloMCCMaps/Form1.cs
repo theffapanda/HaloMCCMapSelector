@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Diagnostics.Metrics;
+using System.Reflection.Emit;
 
 namespace HaloMCCMaps
 {
@@ -83,6 +84,8 @@ namespace HaloMCCMaps
 
             pathLabel.Text = fileToEdit;
 
+            mapMaker();
+
             if (isChecked == true && tabControl1.SelectedIndex != 1)
             {
                 if (mapName.Contains("REMOVED"))
@@ -142,13 +145,18 @@ namespace HaloMCCMaps
             int i = 0;
             while (i < checkedListBox1.Items.Count)
             {
+
                 if (checkedListBox1.Items[i].ToString().Contains("REMOVED"))
                 {
                     checkedListBox1.SetItemChecked(i, false);
                     i++;
                 }
-                checkedListBox1.SetItemChecked(i, true);
-                i++;
+                if (checkedListBox1.Items[i].ToString().Contains("REMOVED") == false)
+                {
+                    checkedListBox1.SetItemChecked(i, true);
+                    i++;
+                }
+                
             }
         }
 
@@ -374,8 +382,152 @@ namespace HaloMCCMaps
 
         private void label1_Click_2(object sender, EventArgs e)
         {
+        }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void mapMaker()
+        {
+            var mapName = checkedListBox1.SelectedItem as string;
+            switch (mapName)
+            {
+                //Halo CE
+                case "beavercreek":
+                    pictureBox1.Load("https://i.imgur.com/NT2BJDM.jpeg");
+                    break;
+                case "bloodgulch":
+                     pictureBox1.Load("https://i.imgur.com/HvCC1f6.jpeg");
+                    break;
+                case "boardingaction":
+                    pictureBox1.Load("https://i.imgur.com/2HHKtyh.png");
+                    break;
+                case "34putput":
+                    pictureBox1.Load("https://i.imgur.com/t3TxXEE.jpeg");
+                    break;
+                case "damnation":
+                    pictureBox1.Load("https://i.imgur.com/VFkUdui.jpeg");
+                    break;
+                case "dangercanyon":
+                    pictureBox1.Load("https://i.imgur.com/JUZ1xau.jpeg");
+                    break;
+                case "deathisland":
+                    pictureBox1.Load("https://i.imgur.com/cwnLbAE.jpeg");
+                    break;
+                case "carousel":
+                    pictureBox1.Load("https://i.imgur.com/8fXm4Mu.png");
+                    break;
+                case "gephyrophobia":
+                    pictureBox1.Load("https://i.imgur.com/t37ap1n.jpeg");
+                    break;
+                case "sidewinder":
+                    pictureBox1.Load("https://i.imgur.com/oiGK9et.jpeg");
+                    break;
+                case "ratrace":
+                    pictureBox1.Load("https://i.imgur.com/9ybQw1K.png");
+                    break;
+                case "prisoner":
+                    pictureBox1.Load("https://i.imgur.com/eIwY7PJ.jpeg");
+                    break;
+                case "hangemhigh":
+                    pictureBox1.Load("https://i.imgur.com/ZyWaIIg.png");
+                    break;
+                case "wizard":
+                    pictureBox1.Load("https://i.imgur.com/8fXm4Mu.png");
+                    break;
+                case "longest":
+                    pictureBox1.Load("https://i.imgur.com/rHV3WvO.jpeg");
+                    break;
+                case "timerbland":
+                    pictureBox1.Load("https://i.imgur.com/C6uDQDC.jpeg");
+                    break;
+                case "icefields":
+                    pictureBox1.Load("https://i.imgur.com/OT0uwUe.jpeg");
+                    break;
+                case "infinity":
+                    pictureBox1.Load("https://i.imgur.com/3WGCQ4z.jpeg");
+                    break;
+                case "putput":
+                    pictureBox1.Load("https://i.imgur.com/t3TxXEE.jpeg");
+                    break;
+                case "timberland":
+                    pictureBox1.Load("https://i.imgur.com/C6uDQDC.jpeg");
+                    break;
+                //Halo 3
+                case "construct":
+                    pictureBox1.Load("https://i.imgur.com/rCzh1oo.jpeg");
+                    break;
+                case "salvation":
+                    pictureBox1.Load("https://i.imgur.com/yneZlcp.jpeg");
+                    break;
+                case "guardian":
+                    pictureBox1.Load("https://i.imgur.com/olJrhE4.jpeg");
+                    break;
+                case "deadlock":
+                    pictureBox1.Load("https://i.imgur.com/xMFhuXd.jpeg");
+                    break;
+                case "isolation":
+                    pictureBox1.Load("https://i.imgur.com/TrM3FfA.jpeg");
+                    break;
+                case "chill":
+                    pictureBox1.Load("https://i.imgur.com/tVS8kJH.jpeg");
+                    break;
+                case "shrine":
+                    pictureBox1.Load("https://i.imgur.com/2e6ZJel.jpeg");
+                    break;
+                case "snowbound":
+                    pictureBox1.Load("https://i.imgur.com/FPwCfKp.jpeg");
+                    break;
+                case "cyberdyne":
+                    pictureBox1.Load("https://i.imgur.com/E39veGY.jpeg");
+                    break;
+                case "riverworld":
+                    pictureBox1.Load("https://i.imgur.com/Z9vTn6G.jpeg");
+                    break;
+                case "warehouse":
+                    pictureBox1.Load("https://i.imgur.com/vl8phC3.jpeg");
+                    break;
+                case "armory":
+                    pictureBox1.Load("https://i.imgur.com/Ql9cJ58.jpeg");
+                    break;
+                case "bunkerworld":
+                    pictureBox1.Load("https://i.imgur.com/UXZUkfF.jpeg");
+                    break;
+                case "ghosttown":
+                    pictureBox1.Load("https://i.imgur.com/qVHnvpa.jpeg");
+                    break;
+                case "lockout":
+                    pictureBox1.Load("https://i.imgur.com/J8LJJ34.jpeg");
+                    break;
+                case "avalanche":
+                    pictureBox1.Load("https://i.imgur.com/4tgB72S.jpeg");
+                    break;
+                case "chillout":
+                    pictureBox1.Load("https://i.imgur.com/RFjbuOV.jpeg");
+                    break;
+                case "descent":
+                    pictureBox1.Load("https://i.imgur.com/g23FPCU.jpeg");
+                    break;
+                case "spacecamp":
+                    pictureBox1.Load("https://i.imgur.com/gginWYT.jpeg");
+                    break;
+                case "sandbox":
+                    pictureBox1.Load("https://i.imgur.com/a6f3XS3.jpeg");
+                    break;
+                case "citadel":
+                    pictureBox1.Load("https://i.imgur.com/LTRZhCy.jpeg");
+                    break;
+                case "midship":
+                    pictureBox1.Load("https://i.imgur.com/dVgGaJA.jpeg");
+                    break;
+                case "docks":
+                    pictureBox1.Load("https://i.imgur.com/7EJxOpa.jpeg");
+                    break;
+                //default:
+                //    pictureBox1.Load("https://pbs-prod.linustechtips.com/monthly_2021_04/386889645_Screenshot2021-04-18175739.png.dc4cbd1a5158bc2b9fe46037c0f8f277.png");
+                //    break;
+            }
         }
     }
-
 }
