@@ -63,7 +63,7 @@
             checkedListBox1.FormattingEnabled = true;
             checkedListBox1.Location = new Point(12, 71);
             checkedListBox1.Name = "checkedListBox1";
-            checkedListBox1.Size = new Size(214, 580);
+            checkedListBox1.Size = new Size(214, 760);
             checkedListBox1.TabIndex = 1;
             checkedListBox1.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged;
             // 
@@ -75,7 +75,7 @@
             tabControl1.Location = new Point(278, 34);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(246, 617);
+            tabControl1.Size = new Size(246, 797);
             tabControl1.TabIndex = 2;
             // 
             // tabPage1
@@ -84,7 +84,7 @@
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(238, 589);
+            tabPage1.Size = new Size(238, 769);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "tabPage1";
             tabPage1.UseVisualStyleBackColor = true;
@@ -107,7 +107,7 @@
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(238, 589);
+            tabPage2.Size = new Size(238, 769);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
@@ -127,7 +127,7 @@
             tabPage3.Controls.Add(h3Label);
             tabPage3.Location = new Point(4, 24);
             tabPage3.Name = "tabPage3";
-            tabPage3.Size = new Size(238, 589);
+            tabPage3.Size = new Size(238, 769);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "tabPage3";
             tabPage3.UseVisualStyleBackColor = true;
@@ -163,7 +163,9 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(548, 58);
+            pictureBox1.Image = Properties.Resources.brave_0ETtJE95R5;
+            pictureBox1.InitialImage = Properties.Resources.brave_0ETtJE95R5;
+            pictureBox1.Location = new Point(550, 130);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(632, 593);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -175,7 +177,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1204, 706);
+            ClientSize = new Size(1204, 856);
             Controls.Add(pictureBox1);
             Controls.Add(installPath);
             Controls.Add(pathLabel);

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Diagnostics.Metrics;
 using System.Reflection.Emit;
+using HaloMCCMaps.Properties;
 
 namespace HaloMCCMaps
 {
@@ -36,7 +37,6 @@ namespace HaloMCCMaps
                 refreshChecklist();
                 checkAllItems();
                 createTabs();
-
             }
 
             else
@@ -72,70 +72,75 @@ namespace HaloMCCMaps
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = checkedListBox1.SelectedIndex;
-            var isChecked = checkedListBox1.GetItemChecked(index);
-            var mapName = checkedListBox1.SelectedItem as string;
-            var mapPath = installPath.Text + "\\" + tabControl1.SelectedTab.Text + "\\maps";
-            var fileToEdit = mapPath + "\\" + mapName + ".map";
-            var fileBackup = mapPath + "\\" + mapName + "REMOVED.map";
 
-            var h2MapPath = installPath.Text + "\\" + tabControl1.SelectedTab.Text + "\\h2_maps_win64_dx11";
-            var h2fileToEdit = h2MapPath + "\\" + mapName + ".map";
-            var h2fileBackup = h2MapPath + "\\" + mapName + "REMOVED.map";
-
-            pathLabel.Text = fileToEdit;
-
-            mapMaker();
-
-            if (isChecked == true && tabControl1.SelectedIndex != 1)
+            if (index != -1)
             {
-                if (mapName.Contains("REMOVED"))
+                var isChecked = checkedListBox1.GetItemChecked(index);
+
+                var mapName = checkedListBox1.SelectedItem as string;
+                var mapPath = installPath.Text + "\\" + tabControl1.SelectedTab.Text + "\\maps";
+                var fileToEdit = mapPath + "\\" + mapName + ".map";
+                var fileBackup = mapPath + "\\" + mapName + "REMOVED.map";
+
+                var h2MapPath = installPath.Text + "\\" + tabControl1.SelectedTab.Text + "\\h2_maps_win64_dx11";
+                var h2fileToEdit = h2MapPath + "\\" + mapName + ".map";
+                var h2fileBackup = h2MapPath + "\\" + mapName + "REMOVED.map";
+
+                pathLabel.Text = fileToEdit;
+
+                mapMaker();
+
+                if (isChecked == true && tabControl1.SelectedIndex != 1)
                 {
-                    var fixedFile = fileToEdit.Replace("REMOVED", "");
-                    File.Move(fileToEdit, fixedFile);
+                    if (mapName.Contains("REMOVED"))
+                    {
+                        var fixedFile = fileToEdit.Replace("REMOVED", "");
+                        File.Move(fileToEdit, fixedFile);
+                        refreshChecklist();
+                        checkAllItems();
+                    }
+                    //MessageBox.Show(mapName + " was fixed!");
+                }
+                else if (tabControl1.SelectedIndex != 1)
+                {
+                    //MessageBox.Show(mapName + " was deleted from " + fileToEdit);
+                    File.Move(fileToEdit, fileBackup);
                     refreshChecklist();
                     checkAllItems();
+                    checkedListBox1.SetItemChecked(index, false);
                 }
-                //MessageBox.Show(mapName + " was fixed!");
-            }
-            else if (tabControl1.SelectedIndex != 1)
-            {
-                //MessageBox.Show(mapName + " was deleted from " + fileToEdit);
-                File.Move(fileToEdit, fileBackup);
-                refreshChecklist();
-                checkAllItems();
-                checkedListBox1.SetItemChecked(index, false);
-            }
 
-            if (isChecked == true && tabControl1.SelectedIndex == 1)
-            {
-                // MessageBox.Show("HEY");
-                if (mapName.Contains("REMOVED"))
+                if (isChecked == true && tabControl1.SelectedIndex == 1)
                 {
-                    var fixedFile = h2fileToEdit.Replace("REMOVED", "");
-                    File.Move(h2fileToEdit, fixedFile);
+                    // MessageBox.Show("HEY");
+                    if (mapName.Contains("REMOVED"))
+                    {
+                        var fixedFile = h2fileToEdit.Replace("REMOVED", "");
+                        File.Move(h2fileToEdit, fixedFile);
+                        checkedListBox1.Items.Clear();
+                        DirectoryInfo dinfo = new DirectoryInfo(@installPath.Text + "\\" + tabControl1.SelectedTab.Text + "\\h2_maps_win64_dx11");
+                        FileInfo[] smFiles = dinfo.GetFiles("*.map");
+                        foreach (FileInfo fi in smFiles)
+                        {
+                            checkedListBox1.Items.Add(Path.GetFileNameWithoutExtension(fi.Name));
+                        }
+                        checkAllItems();
+                    }
+                }
+                else if (tabControl1.SelectedIndex == 1)
+                {
+                    File.Move(h2fileToEdit, h2fileBackup);
                     checkedListBox1.Items.Clear();
                     DirectoryInfo dinfo = new DirectoryInfo(@installPath.Text + "\\" + tabControl1.SelectedTab.Text + "\\h2_maps_win64_dx11");
                     FileInfo[] smFiles = dinfo.GetFiles("*.map");
+
                     foreach (FileInfo fi in smFiles)
                     {
                         checkedListBox1.Items.Add(Path.GetFileNameWithoutExtension(fi.Name));
                     }
                     checkAllItems();
+                    checkedListBox1.SetItemChecked(index, false);
                 }
-            }
-            else if (tabControl1.SelectedIndex == 1)
-            {
-                File.Move(h2fileToEdit, h2fileBackup);
-                checkedListBox1.Items.Clear();
-                DirectoryInfo dinfo = new DirectoryInfo(@installPath.Text + "\\" + tabControl1.SelectedTab.Text + "\\h2_maps_win64_dx11");
-                FileInfo[] smFiles = dinfo.GetFiles("*.map");
-
-                foreach (FileInfo fi in smFiles)
-                {
-                    checkedListBox1.Items.Add(Path.GetFileNameWithoutExtension(fi.Name));
-                }
-                checkAllItems();
-                checkedListBox1.SetItemChecked(index, false);
             }
         }
 
@@ -145,18 +150,23 @@ namespace HaloMCCMaps
             int i = 0;
             while (i < checkedListBox1.Items.Count)
             {
-
-                if (checkedListBox1.Items[i].ToString().Contains("REMOVED"))
+                try
                 {
-                    checkedListBox1.SetItemChecked(i, false);
-                    i++;
+                    if (checkedListBox1.Items[i].ToString().Contains("REMOVED"))
+                    {
+                        checkedListBox1.SetItemChecked(i, false);
+                        i++;
+                    }
+                    if (checkedListBox1.Items[i].ToString().Contains("REMOVED") == false)
+                    {
+                        checkedListBox1.SetItemChecked(i, true);
+                        i++;
+                    }
                 }
-                if (checkedListBox1.Items[i].ToString().Contains("REMOVED") == false)
+                catch
                 {
-                    checkedListBox1.SetItemChecked(i, true);
-                    i++;
+                    break;
                 }
-                
             }
         }
 
@@ -391,6 +401,7 @@ namespace HaloMCCMaps
         private void mapMaker()
         {
             var mapName = checkedListBox1.SelectedItem as string;
+            pictureBox1.Visible = true;
             switch (mapName)
             {
                 //Halo CE
@@ -398,7 +409,7 @@ namespace HaloMCCMaps
                     pictureBox1.Load("https://i.imgur.com/NT2BJDM.jpeg");
                     break;
                 case "bloodgulch":
-                     pictureBox1.Load("https://i.imgur.com/HvCC1f6.jpeg");
+                    pictureBox1.Load("https://i.imgur.com/HvCC1f6.jpeg");
                     break;
                 case "boardingaction":
                     pictureBox1.Load("https://i.imgur.com/2HHKtyh.png");
@@ -454,6 +465,77 @@ namespace HaloMCCMaps
                 case "timberland":
                     pictureBox1.Load("https://i.imgur.com/C6uDQDC.jpeg");
                     break;
+                //Halo 2
+                case "ascension":
+                    pictureBox1.Load("https://i.imgur.com/JG1Rgic.png");
+                    break;
+                case "backwash":
+                    pictureBox1.Load("https://i.imgur.com/U7Anq98.jpeg");
+                    break;
+                case "burial_mounds":
+                    pictureBox1.Load("https://i.imgur.com/EaxHBPf.jpeg");
+                    break;
+                case "coagulation":
+                    pictureBox1.Load("https://i.imgur.com/v7LBcxn.jpeg");
+                    break;
+                case "colossus":
+                    pictureBox1.Load("https://i.imgur.com/S9Z6Urr.jpeg");
+                    break;
+                case "containment":
+                    pictureBox1.Load("https://i.imgur.com/osOyTXD.jpeg");
+                    break;
+                case "derelict":
+                    pictureBox1.Load("https://i.imgur.com/ssyDz8U.jpeg");
+                    break;
+                case "street_sweeper":
+                    pictureBox1.Load("https://i.imgur.com/eXTLvX0.jpeg");
+                    break;
+                case "elongation":
+                    pictureBox1.Load("https://i.imgur.com/6zvZYhF.gif");
+                    break;
+                case "foundation":
+                    pictureBox1.Load("https://i.imgur.com/aqFRgdw.jpeg");
+                    break;
+                case "gemini":
+                    pictureBox1.Load("https://i.imgur.com/O0np7A4.jpeg");
+                    break;
+                case "headlong":
+                    pictureBox1.Load("https://i.imgur.com/zpKHFVa.jpeg");
+                    break;
+                case "cyclotron":
+                    pictureBox1.Load("https://i.imgur.com/i5x91dK.png");
+                    break;
+                //case "lockout":
+                //    pictureBox1.Load("https://i.imgur.com/PPPzNZ9.jpeg");
+                //    break;
+                //case "midship":
+                //    pictureBox1.Load("https://i.imgur.com/qnyXHZn.jpeg");
+                //    break;
+                case "dune":
+                    pictureBox1.Load("https://i.imgur.com/5yY9Ay6.jpeg");
+                    break;
+                case "deltatap":
+                    pictureBox1.Load("https://i.imgur.com/h2MDx7E.jpeg");
+                    break;
+                case "highplains":
+                    pictureBox1.Load("https://i.imgur.com/7BvwtgW.jpeg");
+                    break;
+                case "turf":
+                    pictureBox1.Load("https://i.imgur.com/TlDDVYe.png");
+                    break;
+                case "triplicate":
+                    pictureBox1.Load("https://i.imgur.com/8f3bKID.jpeg");
+                    break;
+                case "waterworks":
+                    pictureBox1.Load("https://i.imgur.com/ta3BzHs.jpeg");
+                    break;
+                case "warlock":
+                    pictureBox1.Load("https://i.imgur.com/QensFVv.jpeg");
+                    break;
+                case "zanzibar":
+                    pictureBox1.Load("https://i.imgur.com/vcqAHOu.jpeg");
+                    break;
+
                 //Halo 3
                 case "construct":
                     pictureBox1.Load("https://i.imgur.com/rCzh1oo.jpeg");
@@ -527,6 +609,9 @@ namespace HaloMCCMaps
                 //default:
                 //    pictureBox1.Load("https://pbs-prod.linustechtips.com/monthly_2021_04/386889645_Screenshot2021-04-18175739.png.dc4cbd1a5158bc2b9fe46037c0f8f277.png");
                 //    break;
+                default:
+                    pictureBox1.Image = Resources.brave_0ETtJE95R5;
+                    break;
             }
         }
     }
