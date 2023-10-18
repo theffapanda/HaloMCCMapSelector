@@ -52,7 +52,7 @@
             // 
             button1.Location = new Point(12, 12);
             button1.Name = "button1";
-            button1.Size = new Size(226, 36);
+            button1.Size = new Size(214, 36);
             button1.TabIndex = 0;
             button1.Text = "Browse for Installation Folder";
             button1.UseVisualStyleBackColor = true;

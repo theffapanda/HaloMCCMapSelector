@@ -6,6 +6,7 @@ using System.IO;
 using System.Diagnostics.Metrics;
 using System.Reflection.Emit;
 using HaloMCCMaps.Properties;
+using System.Reflection.Metadata.Ecma335;
 
 namespace HaloMCCMaps
 {
@@ -78,9 +79,8 @@ namespace HaloMCCMaps
                 var isChecked = checkedListBox1.GetItemChecked(index);
 
                 var mapName = checkedListBox1.SelectedItem as string;
-                var mapPath = installPath.Text + "\\" + tabControl1.SelectedTab.Text + "\\maps";
+                var mapPath = installPath.Text + tabControl1.SelectedTab.Text + "\\maps";
                 var fileToEdit = mapPath + "\\" + mapName + ".map";
-                var fileBackup = mapPath + "\\" + mapName + "REMOVED.map";
 
                 var h2MapPath = installPath.Text + "\\" + tabControl1.SelectedTab.Text + "\\h2_maps_win64_dx11";
                 var h2fileToEdit = h2MapPath + "\\" + mapName + ".map";
@@ -90,7 +90,7 @@ namespace HaloMCCMaps
 
                 mapMaker();
 
-                if (isChecked == true && tabControl1.SelectedIndex != 1)
+                if (isChecked == true && tabControl1.SelectedIndex != 1 && mapName.Contains("chill") == false)
                 {
                     if (mapName.Contains("REMOVED"))
                     {
@@ -101,15 +101,40 @@ namespace HaloMCCMaps
                     }
                     //MessageBox.Show(mapName + " was fixed!");
                 }
-                else if (tabControl1.SelectedIndex != 1)
+                else if (tabControl1.SelectedIndex != 1 && mapName.Contains("chill") == false)
                 {
                     //MessageBox.Show(mapName + " was deleted from " + fileToEdit);
-                    File.Move(fileToEdit, fileBackup);
+                    var fixedFile = fileToEdit.Replace(mapName, mapName + "REMOVED");
+                    File.Move(fileToEdit, fixedFile);
                     refreshChecklist();
                     checkAllItems();
                     checkedListBox1.SetItemChecked(index, false);
                 }
 
+
+                if (isChecked == true && tabControl1.SelectedIndex != 1 && mapName.Contains("chill"))
+                {
+                    if (mapName.Contains("REMOVED"))
+                    {
+                        var fixedFile = fileToEdit.Replace("aREMOVED", "");
+                        File.Move(fileToEdit, fixedFile);
+                        refreshChecklist();
+                        checkAllItems();
+                    }
+                    //MessageBox.Show(mapName + " was fixed!");
+                }
+                else if (tabControl1.SelectedIndex != 1 && mapName.Contains("chill"))
+                {
+                    //MessageBox.Show(mapName + " was deleted from " + fileToEdit);
+                    var fixedFile = fileToEdit.Replace(mapName, mapName + "aREMOVED");
+                    File.Move(fileToEdit, fixedFile);
+                    refreshChecklist();
+                    checkAllItems();
+                    checkedListBox1.SetItemChecked(index, false);
+                }
+
+
+                //Special Cases for Halo 2
                 if (isChecked == true && tabControl1.SelectedIndex == 1)
                 {
                     // MessageBox.Show("HEY");
