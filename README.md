@@ -2,6 +2,7 @@
 
 Allows users to deselect maps to avoid them in matchmaking.
 Currently Support Halo CE / Halo 2 (Classic and Anniversary) / Halo 3
+NOTE: ONLY HALO 3 MAPS CAN BE REMOVED WITHOUT YOU BEING KICKED.
 
 Steps:
 If installation folder is not shown (and you receive the popup) first click the button to find your installation folder.
